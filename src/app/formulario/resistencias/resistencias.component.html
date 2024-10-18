@@ -1,0 +1,100 @@
+<form>
+    <div class="grid md:grid-cols-3 gap-4 m-10">
+        <!-- Banda 1 -->
+        <div>
+            <label for="color1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Primera Banda</label>
+            <select [(ngModel)]="primeraBanda" id="color1" name="color1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="negro">Negro</option>
+                <option value="cafe">Café</option>
+                <option value="rojo">Rojo</option>
+                <option value="naranja">Naranja</option>
+                <option value="amarillo">Amarillo</option>
+                <option value="verde">Verde</option>
+                <option value="azul">Azul</option>
+                <option value="violeta">Violeta</option>
+                <option value="gris">Gris</option>
+                <option value="blanco">Blanco</option>
+            </select>
+        </div>
+
+        <!-- Banda 2 -->
+        <div>
+            <label for="color2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Segunda Banda</label>
+            <select [(ngModel)]="segundaBanda" id="color2" name="color2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="negro">Negro</option>
+                <option value="cafe">Café</option>
+                <option value="rojo">Rojo</option>
+                <option value="naranja">Naranja</option>
+                <option value="amarillo">Amarillo</option>
+                <option value="verde">Verde</option>
+                <option value="azul">Azul</option>
+                <option value="violeta">Violeta</option>
+                <option value="gris">Gris</option>
+                <option value="blanco">Blanco</option>
+            </select>
+        </div>
+
+        <!-- Banda 3 -->
+        <div>
+            <label for="color3" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tercera Banda</label>
+            <select [(ngModel)]="terceraBanda" id="color3" name="color3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="negro">Negro</option>
+                <option value="cafe">Café</option>
+                <option value="rojo">Rojo</option>
+                <option value="naranja">Naranja</option>
+                <option value="amarillo">Amarillo</option>
+                <option value="verde">Verde</option>
+                <option value="azul">Azul</option>
+                <option value="violeta">Violeta</option>
+                <option value="gris">Gris</option>
+                <option value="blanco">Blanco</option>
+            </select>
+        </div>
+
+        <!-- Tolerancia -->
+        <div class="grid md:grid-cols-1 gap-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Tolerancia:</label>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+                <input type="radio" [(ngModel)]="tolerancia" name="tolerancia" value="oro" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"> Oro
+            </label>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+                <input type="radio" [(ngModel)]="tolerancia" name="tolerancia" value="plata" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"> Plata
+            </label>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="guardarResistencia()">Guardar Resistencia</button>
+        <button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4" (click)="imprimirTabla()">Imprimir Tabla</button>
+        <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4" (click)="limpiarTabla()">Limpiar Tabla</button>
+    </div>
+</form>
+
+<!-- Tabla para mostrar resistencias -->
+<div class="m-10">
+    <h2 class="text-lg font-bold">Tabla de Resistencias</h2>
+    <table class="min-w-full border-collapse border border-gray-300">
+        <thead>
+            <tr>
+                <th>Primera Banda</th>
+                <th>Segunda Banda</th>
+                <th>Tercera Banda</th>
+                <th>Tolerancia</th>
+                <th>Valor</th>
+                <th>Valor Máximo</th>
+                <th>Valor Mínimo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let resistencia of resistencias">
+                <td [style.background]="getColor(resistencia.color1)">{{ resistencia.color1 }}</td>
+                <td [style.background]="getColor(resistencia.color2)">{{ resistencia.color2 }}</td>
+                <td [style.background]="getColor(resistencia.color3)">{{ resistencia.color3 }}</td>
+                <td>{{ resistencia.tolerancia }}</td>
+                <td>{{ resistencia.valor }}</td>
+                <td>{{ resistencia.valorMaximo }}</td>
+                <td>{{ resistencia.valorMinimo }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
