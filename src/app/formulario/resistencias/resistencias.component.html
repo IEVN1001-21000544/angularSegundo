@@ -1,5 +1,5 @@
 <form>
-    <div class="grid md:grid-cols-3 gap-4 m-10">
+    <div class="grid md:grid-cols-3 gap-4 mt-35 ml-20 mr-20">
         <!-- Banda 1 -->
         <div>
             <label for="color1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Primera Banda</label>
@@ -62,7 +62,7 @@
             </label>
         </div>
     </div>
-    <div>
+    <div class="ml-20 mr-20">
         <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="guardarResistencia()">Guardar Resistencia</button>
         <button type="button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4" (click)="imprimirTabla()">Imprimir Tabla</button>
         <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4" (click)="limpiarTabla()">Limpiar Tabla</button>
@@ -72,7 +72,7 @@
 <!-- Tabla para mostrar resistencias -->
 <div class="m-10">
     <h2 class="text-lg font-bold">Tabla de Resistencias</h2>
-    <table class="min-w-full border-collapse border border-gray-300">
+    <table class="min-w-full border-collapse border border-gray-300 ml-15">
         <thead>
             <tr>
                 <th>Primera Banda</th>
