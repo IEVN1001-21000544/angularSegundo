@@ -11,5 +11,13 @@ export default[
     {
         path: 'empleados',
         loadComponent: () =>import('./empleados/empleados.component'),
-    }
+    },
+    //{
+      //  path: 'empleados2',
+       // loadComponent: () =>import('./empleados2/empleados.component (1) 1'),
+   // },
+   // {
+     //   path: 'resistencias2',
+      //  loadComponent: () =>import('./resistencias2/resistencias.component (1) 1'),
+    //}
 ]as Routes
