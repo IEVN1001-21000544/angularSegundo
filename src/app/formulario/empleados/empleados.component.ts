@@ -36,44 +36,39 @@ export default class EmpleadosComponent {
 
     agregarEmpleado(event: Event) {
         event.preventDefault();
-
+        
         const index = this.empleados.findIndex(emp => emp.matricula === this.empleado.matricula);
         if (index !== -1) {
-            this.actualizarEmpleado();
+            alert('Ya existe un empleado con esta matrícula.');
             return;
         }
 
+        // Agregar el nuevo empleado
         this.empleados.push({ ...this.empleado });
         this.guardarEmpleados();
         this.limpiarFormulario();
     }
 
-    actualizarEmpleado() {
-    const index = this.empleados.findIndex(emp => emp.matricula === this.empleado.matricula);
-    if (index !== -1) {
-        this.empleados[index] = { ...this.empleado }; 
-        this.guardarEmpleados();
-        this.limpiarFormulario(); 
-        this.empleadoSeleccionado = null; 
-    } else {
-        alert('Empleado no encontrado para actualizar.');
+    modificarEmpleado() {
+        if (this.empleadoSeleccionado) {
+            const index = this.empleados.findIndex(emp => emp.matricula === this.empleadoSeleccionado?.matricula);
+            if (index !== -1) {
+                this.empleados[index] = { ...this.empleado }; 
+                this.guardarEmpleados();
+                this.limpiarFormulario();
+                this.empleadoSeleccionado = null; 
+            } else {
+                alert('Empleado no encontrado para modificar.');
+            }
+        } else {
+            alert('Por favor, seleccione un empleado para modificar.');
+        }
     }
-}
-seleccionarEmpleado(empleado: Empleado) {
-    this.empleadoSeleccionado = empleado; 
-    this.empleado = { ...empleado }; 
-}
 
-    cargarDatosEmpleado() {
-    const empleadoEncontrado = this.empleados.find(emp => emp.matricula === this.empleado.matricula);
-    if (empleadoEncontrado) {
-        this.empleado = { ...empleadoEncontrado };
-        this.empleadoSeleccionado = empleadoEncontrado; 
-    } else {
-        this.limpiarFormulario();
-        this.empleadoSeleccionado = null; 
+    seleccionarEmpleado(empleado: Empleado) {
+        this.empleadoSeleccionado = empleado; 
+        this.empleado = { ...empleado }; 
     }
-}
 
     guardarEmpleados() {
         localStorage.setItem('empleados', JSON.stringify(this.empleados));
@@ -86,67 +81,49 @@ seleccionarEmpleado(empleado: Empleado) {
         }
     }
 
-    modificarEmpleado() {
-    if (this.empleadoSeleccionado) {
-        const index = this.empleados.findIndex(emp => emp.matricula === this.empleadoSeleccionado?.matricula);
-        if (index !== -1) {
-            this.empleados[index] = { ...this.empleado }; 
+    eliminarEmpleado() {
+        if (this.empleadoSeleccionado) {
+            this.empleados = this.empleados.filter(emp => emp.matricula !== this.empleadoSeleccionado!.matricula);
             this.guardarEmpleados();
             this.limpiarFormulario();
-            this.empleadoSeleccionado = null; 
+            this.empleadoSeleccionado = null;
         } else {
-            alert('Empleado no encontrado para modificar.');
+            alert('Por favor, seleccione un empleado para eliminar.');
         }
-    } else {
-        alert('Por favor, seleccione un empleado para modificar.');
     }
-}
 
-    eliminarEmpleado() {
-    if (this.empleadoSeleccionado) {
-        this.empleados = this.empleados.filter(emp => emp.matricula !== this.empleadoSeleccionado!.matricula);
-        this.guardarEmpleados();
-        this.limpiarFormulario();
-        this.empleadoSeleccionado = null;
-    } else {
-        alert('Por favor, seleccione un empleado para eliminar.');
+    calcularHorasPorPagar(horasTrabajadas: number): number {
+        const tarifaRegular = 70; 
+        const horasRegulares = Math.min(horasTrabajadas, 40); 
+        return horasRegulares * tarifaRegular; 
     }
-}
+    
 
-
-    calcularMonto(horasTrabajadas: number): number {
-        const tarifaRegular = 70;
+    calcularHorasExtras(horasTrabajadas: number): number {
         const tarifaExtra = 140; 
-        const horasRegulares = 40; 
-
-        let montoTotal: number;
-
-        if (horasTrabajadas > horasRegulares) {
-            const horasExtra = horasTrabajadas - horasRegulares;
-            const montoHorasRegulares = horasRegulares * tarifaRegular;
-            const montoHorasExtras = horasExtra * tarifaExtra;
-            montoTotal = montoHorasRegulares + montoHorasExtras;
-        } else {
-            montoTotal = horasTrabajadas * tarifaRegular;
-        }
-
-        return montoTotal;
+        const horasExtras = horasTrabajadas > 40 ? horasTrabajadas - 40 : 0; 
+        return horasExtras * tarifaExtra; 
     }
+    
+    calcularMonto(horasTrabajadas: number): number {
+        const montoHorasRegulares = this.calcularHorasPorPagar(horasTrabajadas); 
+        const montoHorasExtras = this.calcularHorasExtras(horasTrabajadas); 
+    
+        return montoHorasRegulares + montoHorasExtras; 
+    }
+    
 
     calcularTotalAPagar(): number {
         let totalAPagar = 0;
-
         for (const empleado of this.empleados) {
-            totalAPagar += this.calcularMonto(empleado.horasTrabajadas); 
+            totalAPagar += this.calcularMonto(empleado.horasTrabajadas);
         }
-
-        return totalAPagar; 
+        return totalAPagar;
     }
 
     imprimirEmpleados() {
         this.mostrarTabla = true;
-        const total = this.calcularTotalAPagar(); 
-        console.log(`Total a pagar por todos los empleados: $${total}`);
+        console.log(`Total a pagar por todos los empleados: $${this.calcularTotalAPagar()}`);
     }
 
     ocultarTabla() {

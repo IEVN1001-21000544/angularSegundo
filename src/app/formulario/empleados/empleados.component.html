@@ -1,5 +1,5 @@
-<div class="display: flex; justify-content: space-between; gap: 2rem; padding: 2rem;">
-    <div class="flex: 1; background-color: #f0f0f0; padding: 1rem; border-radius: 8px;">
+<div class="flex flex-col md:flex-row m-10">
+    <div class="flex-1 bg-gray-100 p-4 rounded-lg m-5 border-2 border-black">
         <h1 class="text-2xl font-bold mb-4">Registro de Empleados</h1>
         <form (submit)="agregarEmpleado($event)" class="mb-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -14,17 +14,12 @@
                 <label for="horas" class="text-black text-xl">Horas trabajadas:</label>
                 <input id="horas" type="number" placeholder="Horas trabajadas" [(ngModel)]="empleado.horasTrabajadas" name="horasTrabajadas" required class="border-2 rounded-md border-black pl-5">
             </div>
-            <button type="submit" class="btn-primary mt-4 bg-blue-600 text-white rounded-md text-xl p-2">Agregar/Modificar Empleado</button>
+            <button type="submit" class="btn-primary mt-4 bg-blue-600 text-white rounded-md text-xl p-2">Agregar Empleado</button>
         </form>
-        <div class="mt-4">
-            <div class="mt-4">
-                <button (click)="modificarEmpleado()" class="btn-primary bg-yellow-600 text-white rounded-md text-xl p-2 mr-2" [disabled]="!empleadoSeleccionado">Modificar</button>
-                <button (click)="eliminarEmpleado()" class="btn-primary bg-red-600 text-white rounded-md text-xl p-2" [disabled]="!empleadoSeleccionado">Eliminar</button>
-            </div>
-        </div>
     </div>
 
-    <div class="flex: 1; background-color: #e0e0e0; padding: 1rem; border-radius: 8px;">
+    <div class="flex-1 bg-gray-200 p-4 rounded-lg m-5 border-2 border-black">
+        <button (click)="imprimirEmpleados()" class="btn-primary bg-blue-600 text-white rounded-md text-xl p-2 mb-4">Imprimir</button>
         <div *ngIf="mostrarTabla" class="overflow-x-auto">
             <table class="table-auto w-full border border-gray-300 rounded-md">
                 <thead>
@@ -34,23 +29,34 @@
                         <th class="border-2 border-black px-4 py-2">Correo</th>
                         <th class="border-2 border-black px-4 py-2">Edad</th>
                         <th class="border-2 border-black px-4 py-2">Horas Trabajadas</th>
-                        <th class="border-2 border-black px-4 py-2">Monto a Pagar</th>
+                        <th class="border-2 border-black px-4 py-2">Horas por pagar</th>
+                        <th class="border-2 border-black px-4 py-2">Horas Extras</th>
+                        <th class="border-2 border-black px-4 py-2">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let empleado of empleados" (click)="seleccionarEmpleado(empleado)" [class.bg-blue-200]="empleado === empleadoSeleccionado">
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ empleado.matricula }}</td>
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ empleado.nombre }}</td>
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ empleado.correo }}</td>
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ empleado.edad }}</td>
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ empleado.horasTrabajadas }}</td>
-                        <td class="border-2 border-black rounded-md px-4 py-2 bg-slate-300">{{ calcularMonto(empleado.horasTrabajadas) }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ empleado.matricula }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ empleado.nombre }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ empleado.correo }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ empleado.edad }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ empleado.horasTrabajadas }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ calcularHorasPorPagar(empleado.horasTrabajadas) }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ calcularHorasExtras(empleado.horasTrabajadas) }}</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300">{{ calcularMonto(empleado.horasTrabajadas) }}</td>
                     </tr>
-                </tbody>                
+                </tbody> 
+                <tfoot>
+                    <tr>
+                        <td colspan="7" class="text-right font-bold px-4 py-2">Total a Pagar:</td>
+                        <td class="border-2 border-black px-4 py-2 bg-slate-300 font-bold">{{ calcularTotalAPagar() }}</td>
+                    </tr>
+                </tfoot>
             </table>
-            <p class="text-xl font-bold mt-4">Total a Pagar: ${{ calcularTotalAPagar() }}</p>
         </div>
-        <button (click)="imprimirEmpleados()" class="btn-primary mt-4 bg-blue-600 text-white rounded-md text-xl p-2">Imprimir</button>
-        <button (click)="ocultarTabla()" class="btn-primary mt-4 bg-orange-600 text-white rounded-md text-xl p-2 m-2">Ocultar</button>
+        <div class="mt-4">
+            <button (click)="modificarEmpleado()" class="btn-primary bg-yellow-600 text-white rounded-md text-xl p-2 mr-2" [disabled]="!empleadoSeleccionado">Modificar</button>
+            <button (click)="eliminarEmpleado()" class="btn-primary bg-red-600 text-white rounded-md text-xl p-2" [disabled]="!empleadoSeleccionado">Eliminar</button>
+        </div>
     </div>
 </div>
