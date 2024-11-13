@@ -16,5 +16,9 @@ export const routes: Routes = [
     {
         path:'empleados',
         loadChildren: () => import('./formulario/formulario.routes')
+    },
+    {
+        path: 'utl',
+        loadChildren: () => import('./utl/utl.routes')
     }
 ];
