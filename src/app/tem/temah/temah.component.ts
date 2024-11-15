@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, output} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-temah',
@@ -9,11 +9,4 @@ import { Component, EventEmitter, Input, Output, output} from '@angular/core';
 })
 export class TemahComponent {
 
-  @Input() mesaje!:string; //Propiedad de entrada
-  @Output() mensaje2 = new EventEmitter<string>();//Propiedad de salida
-
-  enviarMensaje(){
-    this.mensaje2.emit('Hola desde hijo');
-  }
 }
-
